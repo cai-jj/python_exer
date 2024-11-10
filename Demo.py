@@ -81,25 +81,32 @@ def process_url(url):
 
 if __name__ == '__main__':
     urls = read_domains_from_file('domain.txt')
-    output_file = 'output.txt'
-    url_domain_map = {}
-    for url in urls:
-        domains = get_domains_from_url(url)
-        url = process_url(url)
-        url_domain_map[url] = domains
-    write_to_file(url_domain_map, output_file)
-    alldomains = set()
-    for url in urls:
-        domains = get_domains_from_url(url)
-        url = process_url(url)
-        alldomains.add(url)
-        alldomains.update(domains)
-    domain_ip_map_out_file = 'domain_ip_map.txt'
+    output_file = 'out1.txt'
     domain_ip_map = {}
-    for domain in alldomains:
-        iplist = get_all_ips_from_domain(domain, 1, 0)
-        domain_ip_map[domain] = iplist
-    write_to_file(domain_ip_map, domain_ip_map_out_file)
+    for url in urls:
+        ips = get_all_ips_from_domain(url)
+        process_url(url)
+        domain_ip_map[url] = ips
+    write_to_file(domain_ip_map, output_file)
+    # output_file = 'output.txt'
+    # url_domain_map = {}
+    # for url in urls:
+    #     domains = get_domains_from_url(url)
+    #     url = process_url(url)
+    #     url_domain_map[url] = domains
+    # write_to_file(url_domain_map, output_file)
+    # alldomains = set()
+    # for url in urls:
+    #     domains = get_domains_from_url(url)
+    #     url = process_url(url)
+    #     alldomains.add(url)
+    #     alldomains.update(domains)
+    # domain_ip_map_out_file = 'domain_ip_map.txt'
+    # domain_ip_map = {}
+    # for domain in alldomains:
+    #     iplist = get_all_ips_from_domain(domain, 1, 0)
+    #     domain_ip_map[domain] = iplist
+    # write_to_file(domain_ip_map, domain_ip_map_out_file)
     # for url in urls:
     #     domains = get_domains_from_url(url)
     #     domain_info = {}
