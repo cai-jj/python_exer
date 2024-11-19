@@ -1,0 +1,13 @@
+{
+    "https://www.example.com": [
+        "page1",
+        "page2"
+    ],
+    "https://www.another-example.com": [
+        "page3",
+        "page4"
+    ],
+    "https://www.yet-another-example.com": [
+        "page5"
+    ]
+}

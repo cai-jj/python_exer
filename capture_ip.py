@@ -3,8 +3,8 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 import subprocess
-
-
+import json
+from util.file_util import FileUtil
 
 def start_tshark(output_file):
 
@@ -48,7 +48,7 @@ def extract_ips_from_pcap(pcap_file):
 def visit_website(url, output_file):
     # 设置 Chrome 选项
     chrome_options = Options()
-    # chrome_options.add_argument('--headless')  # 无头模式，不打开浏览器窗口
+    chrome_options.add_argument('--headless')  # 无头模式，不打开浏览器窗口
     chrome_options.add_argument('--disable-gpu')
 
     # 指定 ChromeDriver 的路径
@@ -75,12 +75,26 @@ def visit_website(url, output_file):
         # 关闭浏览器
         driver.quit()
 
+def read_domains_from_file(file_path):
+    with open(file_path, 'r') as file:
+        domains = [line.strip() for line in file if line.strip()]
+    return domains
+
+
 
 
 if __name__ == '__main__':
-    urls = ["https://www.163.com"]  # 可以添加更多网址
+    # 访问域名并使用Wireshark抓取对应的IP地址
+    urls = read_domains_from_file('domain.txt')
+    capture_ip_map = {}
     for i, url in enumerate(urls):
         output_file = f'output_{i}.pcap'
-        visit_website(url, output_file)
+        # visit_website(url, output_file)
         ips = extract_ips_from_pcap(output_file)
-        print(ips)
+        capture_ip_map[url] = ips
+    output_file = 'capture_ip_map.json'
+    FileUtil.write_to_file(capture_ip_map, output_file)
+    read_kv_pairs = FileUtil.read_from_file(output_file)
+    print(read_kv_pairs)
+
+
